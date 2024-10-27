@@ -1,2 +1,2 @@
 # SugarSense
-AI ATL 24 Hackathon Project developed alongside Kevin Wang, Sasanka Polisetti, and Jeffrey Xu.
+AI ATL 24 Hackathon Project developed by Rohan Dalal, Kevin Wang, Sasanka Polisetti, and Jeffrey Xu.
