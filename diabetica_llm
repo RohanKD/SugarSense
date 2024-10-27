@@ -1,0 +1,64 @@
+import json
+from google.api import httpbody_pb2
+from google.cloud import aiplatform_v1
+
+prediction_client = aiplatform_v1.PredictionServiceClient(
+    client_options={"api_endpoint": "us-east1-aiplatform.googleapis.com"}
+)
+
+def analyze_health_data(data):
+    prompt = ""
+
+    for key, value in data:
+        prompt += key
+        prompt += "\n"
+        prompt += value
+
+
+    prompt += """
+        Using the following user data, provide a personalized overview for diabetes management, focusing on actionable diet and fitness insights, as well as general health recommendations that might be useful for the user and their doctor. Please highlight any potential health risks to monitor closely:
+
+                User Data:
+
+                Health Tracker Metrics
+                Steps per day: [value]
+                Heart rate (average/resting): [value]
+                Food Intake
+                Daily caloric count: [value]
+                Nutritional breakdown (optional): [details if available]
+                Insulin Information
+                Dosage (units per day and timing): [value]
+                ECG Analysis
+                Key patterns or abnormalities detected: [details if available]
+                Retinal Scan
+                Notable findings: [details if available]
+                
+                Output Requirements:
+
+                Diet suggestions tailored to the user's caloric intake, activity level, and heart health.
+                Fitness recommendations considering heart rate patterns and daily steps.
+                Insight on managing insulin timing/dosage based on observed data.
+                Alert any markers or risk factors identified in the ECG or retinal scan that may require a doctor’s review.
+                General lifestyle advice to support long-term diabetes management.
+                Please provide a comprehensive summary that supports the user in maintaining and improving their health, with a focus on diabetes-specific risks and care.
+        """
+
+
+    json_data = json.dumps(data)
+
+    http_body = httpbody_pb2.HttpBody(
+        data=json_data.encode("utf-8"),
+        content_type="application/json",
+    )
+
+    request = aiplatform_v1.RawPredictRequest(
+        endpoint="endpoint_name",
+        http_body=http_body,
+    )
+
+    response = prediction_client.raw_predict(request)
+    return json.loads(response.data)
+
+
+
+    

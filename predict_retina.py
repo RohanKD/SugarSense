@@ -18,6 +18,7 @@ def preprocess_image(img_path):
     return img_array
 
 
+
 def predict_on_images(image_dir):
     predictions = []
     image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]

@@ -1,3 +1,5 @@
+import json
+
 from apple_watch import process_apple_watch_data
 from ecg import process_ecg_data
 from ecg_analysis import analyze_ecg_data
@@ -6,6 +8,7 @@ from libre import analyze_blood_sugar_report
 from predict_retina import train_and_predict_retinopathy
 from retina import process_retina_images
 from diabetica_llm import analyze_health_data
+
 
 from anthropic import Anthropic, HUMAN_PROMPT, AI_PROMPT
 import os
@@ -30,9 +33,10 @@ def main():
 
     blood_sugar_analysis = analyze_blood_sugar_report(blood_sugar_report)
 
-    retinopathy_results = train_and_predict_retinopathy(retina_images_path, retinopathy_model)
-
     retina_image_data = process_retina_images(retina_images_path)
+    
+    retinopathy_results = predict_on_images(retina_images_path, retinopathy_model)
+
 
     combined_data = {
         'apple_watch': apple_watch_data,
